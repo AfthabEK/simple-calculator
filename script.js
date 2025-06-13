@@ -19,23 +19,6 @@ function evaluateExpression(exp) {
 
     console.log(terms);
     
-    // let result = terms.reduce((sum,term) => {
-    //     return ['+','-','*','/'].includes(term)? sum:sum+parseInt(term);
-    // },0)
-/*
-
-    multiply
-    writeIndex = 0, readIndex = 0
-    if  arr[readindex] is number:
-        readindex ++ 
-    else if arr[readindex] is *
-        arr[writeIndex] * arr[readindex + 1]
-    else
-        readIndex ++
-        writeIndex = readindex
-    
-*/
-
     let limit = terms.length
     let writeIndex = 0
     let readIndex = 0;
@@ -43,7 +26,7 @@ function evaluateExpression(exp) {
     while(readIndex < limit) {
         if(terms[readIndex] === '/') {
             terms[writeIndex] = parseFloat(terms[writeIndex]) / parseFloat(terms[readIndex + 1])
-            terms[writeIndex].toFixed(5)
+            
             readIndex++;
         }
         else if (['+','-','*'].includes(terms[readIndex])) {
@@ -56,6 +39,7 @@ function evaluateExpression(exp) {
 
     }
 
+    console.log(terms);
     limit = writeIndex
     writeIndex = 0
     readIndex = 0;
@@ -63,7 +47,7 @@ function evaluateExpression(exp) {
     while(readIndex < limit) {
         if(terms[readIndex] === '*') {
             terms[writeIndex] = parseFloat(terms[writeIndex]) * parseFloat(terms[readIndex + 1])
-            terms[writeIndex].toFixed(5)
+            
             readIndex++;
         }
         else if (['+','-'].includes(terms[readIndex])) {
@@ -75,7 +59,7 @@ function evaluateExpression(exp) {
         }
 
     }
-    
+    console.log(terms);
     limit = writeIndex
     writeIndex = 0
     readIndex = 0;
@@ -83,7 +67,7 @@ function evaluateExpression(exp) {
     while(readIndex < limit) {
         if(terms[readIndex] === '+') {
             terms[writeIndex] = parseFloat(terms[writeIndex]) + parseFloat(terms[readIndex + 1])
-            terms[writeIndex].toFixed(5)
+            
             readIndex++;
         }
         else if (['-'].includes(terms[readIndex])) {
@@ -94,6 +78,9 @@ function evaluateExpression(exp) {
             readIndex++;
         }
     }
+
+    console.log(terms);
+
     limit = writeIndex
     writeIndex = 0
     readIndex = 0;
@@ -101,7 +88,7 @@ function evaluateExpression(exp) {
     while(readIndex < limit) {
         if(terms[readIndex] === '-') {
             terms[writeIndex] = parseFloat(terms[writeIndex]) - parseFloat(terms[readIndex + 1])
-            terms[writeIndex]
+            
             readIndex++;
         }
         else {
@@ -149,16 +136,33 @@ function equalButtonClicked() {
 
     
     let result  = evaluateExpression(trimmedText)
-    outputConsole.textContent = result.toFixed(5)
+    outputConsole.textContent = result
     
 }
 
 function backspaceButtonClicked() {
     let currentText = outputConsole.textContent;
+    /*
+    
     let trimmedText = currentText.trim();
     trimmedText = trimmedText.substring(0,trimmedText.length -1)
     trimmedText = trimmedText.trim()
     outputConsole.textContent = trimmedText
+    */
+
+    const tokens = currentText.trim().split(" ")
+    
+    if(tokens.length === 0) return;
+
+    let last = tokens[tokens.length -1]
+
+    if(last.length === 1)
+        tokens.pop();
+    else {
+        tokens[tokens.length - 1] = last.slice(0,-1);
+    }
+
+    outputConsole.textContent = tokens.join(" ").trim()
 }
 
 
